@@ -26,6 +26,8 @@ public class TPS : MonoBehaviour
       Idle
    }
 
+   private static readonly int CACHE_SIZE = 3;
+
    public PlayerPosture playerPosture = PlayerPosture.Stand;
    public LocomotionState locomotionState = LocomotionState.Idle;
    public ArmState armState = ArmState.Normal;
@@ -33,15 +35,20 @@ public class TPS : MonoBehaviour
 
    public float gravity = -9.81f;
 
+
+   public float jumpVelocity = 5f;
+
    private readonly float crouchSpeed = 1.5f;
 
    private readonly float crouchThreshold = 0f;
+   private readonly float inAirThreshold = 2.1f;
    private readonly float runSpeed = 5.5f;
    private readonly float standThreshold = 1f;
+   private readonly Vector3[] velCache = new Vector3[CACHE_SIZE];
    private readonly float walkSpeed = 2.5f;
    private Animator animator;
+   private Vector3 averageVel = Vector3.zero;
    private Transform cameraTransform;
-   private float inAirThreshold = 2f;
    private bool isAiming;
    private bool isCrouching;
    private bool isGrounded;
@@ -49,6 +56,8 @@ public class TPS : MonoBehaviour
    private bool isRunning;
    private bool isStanding;
    private bool isWalking;
+
+   private Vector3 lastVelocity;
 
    private Vector2 moveInput;
    private int moveSpeedHash;
@@ -60,7 +69,9 @@ public class TPS : MonoBehaviour
 
    private int postureHash;
    private int turnSpeedHash;
+   private int velCacheIndex;
    private float VerticalVelocity;
+   private int verticalVelocityHash;
 
 
    private void Start()
@@ -71,6 +82,7 @@ public class TPS : MonoBehaviour
       postureHash = Animator.StringToHash("玩家姿态");
       moveSpeedHash = Animator.StringToHash("移动速度");
       turnSpeedHash = Animator.StringToHash("旋转速度");
+      verticalVelocityHash = Animator.StringToHash("垂直速度");
       if (Camera.main != null) cameraTransform = Camera.main.transform;
 
       playerinput = GetComponent<PlayerInput>();
@@ -81,23 +93,49 @@ public class TPS : MonoBehaviour
    private void Update()
    {
       CalculateGravity();
+      Jump();
       CountInputDirection();
       SwitchPlayerStates();
       SetAnimator();
    }
 
+
    private void OnAnimatorMove()
    {
-      var playerDeltaMovement = animator.deltaPosition;
-      playerDeltaMovement.y = VerticalVelocity * Time.deltaTime;
-      characterController.Move(playerDeltaMovement);
+      if (playerPosture != PlayerPosture.InAir)
+      {
+         var playerDeltaMovement = animator.deltaPosition;
+         playerDeltaMovement.y = VerticalVelocity * Time.deltaTime;
+         characterController.Move(playerDeltaMovement);
+         averageVel = AverageVel(animator.velocity);
+      }
+      else
+      {
+         var playerDeltaMovement = averageVel * Time.deltaTime;
+         playerDeltaMovement.y = VerticalVelocity * Time.deltaTime;
+         characterController.Move(playerDeltaMovement);
+      }
+   }
+
+
+   private Vector3 AverageVel(Vector3 newVel)
+   {
+      velCache[velCacheIndex] = newVel;
+      velCacheIndex++;
+      velCacheIndex %= CACHE_SIZE;
+      var average = Vector3.zero;
+      foreach (var vel in velCache) average += vel;
+
+      return average / CACHE_SIZE;
    }
 
 
    public void SwitchPlayerStates()
    {
       // 修改姿势状态判断
-      if (isCrouching)
+      if (!characterController.isGrounded)
+         playerPosture = PlayerPosture.InAir;
+      else if (isCrouching)
          playerPosture = PlayerPosture.Crouch;
       else
          playerPosture = PlayerPosture.Stand;
@@ -115,10 +153,17 @@ public class TPS : MonoBehaviour
          armState = ArmState.Normal;
    }
 
+   private void Jump()
+   {
+      if (characterController.isGrounded && isJumping)
+         VerticalVelocity = jumpVelocity;
+   }
+
+
    private void CalculateGravity()
    {
       if (characterController.isGrounded)
-         VerticalVelocity = 0f;
+         VerticalVelocity = gravity * Time.deltaTime;
       else
          VerticalVelocity += gravity * Time.deltaTime;
    }
@@ -162,10 +207,16 @@ public class TPS : MonoBehaviour
                break;
          }
       }
+      else if (playerPosture == PlayerPosture.InAir)
+      {
+         animator.SetFloat(postureHash, inAirThreshold, 0.1f, Time.deltaTime);
+         animator.SetFloat(verticalVelocityHash, VerticalVelocity, 0.1f, Time.deltaTime);
+      }
+
 
       if (armState == ArmState.Normal)
       {
-         var rad = Mathf.Atan2(playerMovement.x, playerMovement.z);
+         float rad = Mathf.Atan2(playerMovement.x, playerMovement.z);
          animator.SetFloat(turnSpeedHash, rad, 0.1f, Time.deltaTime);
          playerTransform.Rotate(0, rad * 200 * Time.deltaTime, 0f);
          //Debug.Log(rad);
