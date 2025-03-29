@@ -29,6 +29,9 @@ public class TPS : MonoBehaviour
    public PlayerPosture playerPosture = PlayerPosture.Stand;
    public LocomotionState locomotionState = LocomotionState.Idle;
    public ArmState armState = ArmState.Normal;
+   public CharacterController characterController;
+
+   public float gravity = -9.81f;
 
    private readonly float crouchSpeed = 1.5f;
 
@@ -57,6 +60,7 @@ public class TPS : MonoBehaviour
 
    private int postureHash;
    private int turnSpeedHash;
+   private float VerticalVelocity;
 
 
    private void Start()
@@ -70,34 +74,36 @@ public class TPS : MonoBehaviour
       if (Camera.main != null) cameraTransform = Camera.main.transform;
 
       playerinput = GetComponent<PlayerInput>();
-      if (playerinput != null)
-      {
-         playerinput.onActionTriggered += GetMoveInput;
-         playerinput.onActionTriggered += GetRunInput;
-         playerinput.onActionTriggered += GetJumpInput;
-         playerinput.onActionTriggered += GetCrouchInput;
-         playerinput.onActionTriggered += GetAimInput;
-      }
+      characterController = GetComponent<CharacterController>();
    }
 
    // Update is called once per frame
    private void Update()
    {
+      CalculateGravity();
       CountInputDirection();
       SwitchPlayerStates();
       SetAnimator();
    }
 
+   private void OnAnimatorMove()
+   {
+      var playerDeltaMovement = animator.deltaPosition;
+      playerDeltaMovement.y = VerticalVelocity * Time.deltaTime;
+      characterController.Move(playerDeltaMovement);
+   }
+
+
    public void SwitchPlayerStates()
    {
       // 修改姿势状态判断
-      if (!isGrounded)
+      if (isCrouching)
          playerPosture = PlayerPosture.Crouch;
       else
          playerPosture = PlayerPosture.Stand;
 
       if (moveInput.sqrMagnitude == 0)
-         playerPosture = PlayerPosture.Idle;
+         locomotionState = LocomotionState.Idle;
       else if (!isRunning)
          locomotionState = LocomotionState.Walk;
       else
@@ -108,6 +114,15 @@ public class TPS : MonoBehaviour
       else
          armState = ArmState.Normal;
    }
+
+   private void CalculateGravity()
+   {
+      if (characterController.isGrounded)
+         VerticalVelocity = 0f;
+      else
+         VerticalVelocity += gravity * Time.deltaTime;
+   }
+
 
    public void CountInputDirection()
    {
@@ -150,8 +165,10 @@ public class TPS : MonoBehaviour
 
       if (armState == ArmState.Normal)
       {
-         var rad = Mathf.Atan2(moveInput.x, moveInput.y);
+         var rad = Mathf.Atan2(playerMovement.x, playerMovement.z);
          animator.SetFloat(turnSpeedHash, rad, 0.1f, Time.deltaTime);
+         playerTransform.Rotate(0, rad * 200 * Time.deltaTime, 0f);
+         //Debug.Log(rad);
       }
    }
 
