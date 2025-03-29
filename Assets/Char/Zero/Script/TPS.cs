@@ -69,15 +69,15 @@ public class TPS : MonoBehaviour
       turnSpeedHash = Animator.StringToHash("旋转速度");
       if (Camera.main != null) cameraTransform = Camera.main.transform;
 
-
-      playerinput = playerTransform.GetComponent<PlayerInput>();
-
-
-      playerinput.actions["Move"].performed += GetMoveInput;
-      playerinput.actions["Run"].performed += GetRunInput;
-      playerinput.actions["Crouch"].performed += GetCrouchInput;
-      playerinput.actions["Jump"].performed += GetJumpInput;
-      playerinput.actions["Aim"].performed += GetAimInput;
+      playerinput = GetComponent<PlayerInput>();
+      if (playerinput != null)
+      {
+         playerinput.onActionTriggered += GetMoveInput;
+         playerinput.onActionTriggered += GetRunInput;
+         playerinput.onActionTriggered += GetJumpInput;
+         playerinput.onActionTriggered += GetCrouchInput;
+         playerinput.onActionTriggered += GetAimInput;
+      }
    }
 
    // Update is called once per frame
