@@ -785,9 +785,6 @@
         <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
             <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
         </Reference>
-        <Reference Include="AHD2.TODSystem.Runtime">
-            <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\AHD2.TODSystem.Runtime.dll</HintPath>
-        </Reference>
         <Reference Include="Unity.Timeline">
             <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
         </Reference>
@@ -853,9 +850,6 @@
         </Reference>
         <Reference Include="Unity.Animation.Rigging">
             <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
-        </Reference>
-        <Reference Include="AHD2.TODSystem.Editor">
-            <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\AHD2.TODSystem.Editor.dll</HintPath>
         </Reference>
         <Reference Include="Unity.RenderPipelines.Universal.Editor">
             <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
