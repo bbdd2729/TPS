@@ -26,6 +26,8 @@ public class TPS : MonoBehaviour
    }
 
    private static readonly int CACHE_SIZE = 3;
+   private static readonly int 攻击状态 = Animator.StringToHash("攻击状态");
+
 
    public StarRailCharacterRenderingController renderingController;
 
@@ -63,12 +65,14 @@ public class TPS : MonoBehaviour
 
    // 状态标志
    private bool isAiming;
+   private bool isAttacking;
    private bool isCrouching;
    private bool isGrounded;
    private bool isJumping;
    private bool isRunning;
    private bool isStanding;
    private bool isWalking;
+
 
    private Vector3 lastVelocity;
    private LocomotionState locomotionState = LocomotionState.Idle;
@@ -117,9 +121,11 @@ public class TPS : MonoBehaviour
       CheckGround();
       CalculateGravity();
       Jump();
+      SetAttack();
       CountInputDirection();
       SwitchPlayerStates();
       SetAnimator();
+
 
       //Debug.Log(GetCameraDistance());
       SetDitherAlpha(GetCameraDistance());
@@ -277,6 +283,11 @@ public class TPS : MonoBehaviour
       Gizmos.DrawSphere(ditherAlphaPoint, 0.1f);
    }
 
+   private void SetAttack()
+   {
+      if (isAttacking)
+         animator.SetTrigger(攻击状态);
+   }
 
    #region 输入
 
@@ -303,6 +314,11 @@ public class TPS : MonoBehaviour
    public void GetAimInput(InputAction.CallbackContext ctx)
    {
       isAiming = ctx.ReadValueAsButton();
+   }
+
+   public void GeiAttackInput(InputAction.CallbackContext ctx)
+   {
+      isAttacking = ctx.ReadValueAsButton();
    }
 
    #endregion
