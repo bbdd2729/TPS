@@ -1,3 +1,4 @@
+using HSR.NPRShader;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,22 +27,20 @@ public class TPS : MonoBehaviour
 
    private static readonly int CACHE_SIZE = 3;
 
-   // 状态枚举
-   public PlayerPosture playerPosture = PlayerPosture.Stand;
-   public LocomotionState locomotionState = LocomotionState.Idle;
-   public ArmState armState = ArmState.Normal;
+   public StarRailCharacterRenderingController renderingController;
 
-   // 组件引用
-   public CharacterController characterController;
 
    // 物理参数
    public float gravity = -9.81f; // 重力加速度
-   public float jumpVelocity = 5f; // 跳跃速度
+   public float maxHeight = 1.2f; // 最大跳跃高度
    public float fallMultiplier = 1.5f; // 下落速度的乘数
    public float groundCheckDistance = 0.4f; // 地面检测距离
 
+   public Vector3 ditherAlphaPoint = Vector3.zero;
+
    // 移动速度参数
    private readonly float crouchSpeed = 1.5f; // 蹲伏速度
+
 
    // 状态阈值
    private readonly float crouchThreshold = 0f; // 蹲伏阈值
@@ -51,10 +50,16 @@ public class TPS : MonoBehaviour
    private readonly Vector3[] velCache = new Vector3[CACHE_SIZE]; // 速度缓存
    private readonly float walkSpeed = 2.5f; // 行走速度
    private Animator animator;
+   private ArmState armState = ArmState.Normal;
+
 
    // 移动相关
    private Vector3 averageVel = Vector3.zero;
    private Transform cameraTransform;
+
+   // 组件引用
+   private CharacterController characterController;
+
 
    // 状态标志
    private bool isAiming;
@@ -66,10 +71,14 @@ public class TPS : MonoBehaviour
    private bool isWalking;
 
    private Vector3 lastVelocity;
+   private LocomotionState locomotionState = LocomotionState.Idle;
    private Vector2 moveInput;
    private int moveSpeedHash;
    private PlayerInput playerinput;
    private Vector3 playerMovement = Vector3.zero;
+
+   // 状态枚举
+   private PlayerPosture playerPosture = PlayerPosture.Stand;
    private Transform playerTransform;
 
    // 动画参数哈希
@@ -81,6 +90,7 @@ public class TPS : MonoBehaviour
    private float VerticalVelocity; // 当前垂直速度
    private int verticalVelocityHash;
 
+
    private void Start()
    {
       playerTransform = transform;
@@ -91,6 +101,12 @@ public class TPS : MonoBehaviour
       turnSpeedHash = Animator.StringToHash("旋转速度");
       verticalVelocityHash = Animator.StringToHash("垂直速度");
       if (Camera.main != null) cameraTransform = Camera.main.transform;
+
+      //renderingController = GetComponent<StarRailCharacterRenderingController>();  // 获取组件
+      //if (renderingController == null)
+      {
+         //Debug.LogError("组件获取失败");
+      }
 
       playerinput = GetComponent<PlayerInput>();
       characterController = GetComponent<CharacterController>();
@@ -104,6 +120,10 @@ public class TPS : MonoBehaviour
       CountInputDirection();
       SwitchPlayerStates();
       SetAnimator();
+
+      //Debug.Log(GetCameraDistance());
+      SetDitherAlpha(GetCameraDistance());
+      //OnDrawGizous();
    }
 
    private void OnAnimatorMove()
@@ -143,7 +163,7 @@ public class TPS : MonoBehaviour
       return average / CACHE_SIZE;
    }
 
-   public void SwitchPlayerStates()
+   private void SwitchPlayerStates()
    {
       // 修改姿势状态判断
       if (!isGrounded)
@@ -169,7 +189,7 @@ public class TPS : MonoBehaviour
    private void Jump()
    {
       if (isGrounded && isJumping)
-         VerticalVelocity = jumpVelocity;
+         VerticalVelocity = Mathf.Sqrt(-2 * maxHeight * gravity);
    }
 
    private void CalculateGravity()
@@ -185,14 +205,14 @@ public class TPS : MonoBehaviour
       }
    }
 
-   public void CountInputDirection()
+   private void CountInputDirection()
    {
       var cameraForwardPj = new Vector3(cameraTransform.forward.x, 0, cameraTransform.forward.z).normalized;
       playerMovement = cameraForwardPj * moveInput.y + cameraTransform.right * moveInput.x;
       playerMovement = playerTransform.InverseTransformDirection(playerMovement);
    }
 
-   public void SetAnimator()
+   private void SetAnimator()
    {
       if (playerPosture == PlayerPosture.Stand)
       {
@@ -238,6 +258,25 @@ public class TPS : MonoBehaviour
          //Debug.Log(rad);
       }
    }
+
+   private float GetCameraDistance()
+   {
+      var checkPoint = new Vector3(playerTransform.position.x, playerTransform.position.y + 1f, playerTransform.position.z);
+      var cameraDistance = Vector3.Distance(checkPoint, cameraTransform.position);
+      return cameraDistance;
+   }
+
+   private void SetDitherAlpha(float cameraDistance)
+   {
+      renderingController.DitherAlpha = cameraDistance;
+   }
+
+   private void OnDrawGizous()
+   {
+      Gizmos.color = Color.red;
+      Gizmos.DrawSphere(ditherAlphaPoint, 0.1f);
+   }
+
 
    #region 输入
 

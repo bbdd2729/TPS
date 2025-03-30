@@ -1,7 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boxophobic.Utils.Editor", "Boxophobic.Utils.Editor.csproj", "{19dc4acf-ba0e-570d-ceb3-4fbd1bc7dada}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{3878016c-17c1-60b2-2942-32f1cff482b8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boxophobic.Utils.Scripts", "Boxophobic.Utils.Scripts.csproj", "{81709a85-0c03-91ef-6720-e6629aa861c3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boxophobic.AtmosphericHeightFog.Runtime", "Boxophobic.AtmosphericHeightFog.Runtime.csproj", "{f4e34a11-0569-333d-df05-d21629a047d6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boxophobic.AtmosphericHeightFog.Editor", "Boxophobic.AtmosphericHeightFog.Editor.csproj", "{ed831ac4-945f-ad96-5456-92bde9d8a121}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{a7c4bfc9-9807-f7d6-5d3f-d604b045c23a}"
 EndProject
@@ -10,8 +18,16 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19dc4acf-ba0e-570d-ceb3-4fbd1bc7dada}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19dc4acf-ba0e-570d-ceb3-4fbd1bc7dada}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3878016c-17c1-60b2-2942-32f1cff482b8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3878016c-17c1-60b2-2942-32f1cff482b8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81709a85-0c03-91ef-6720-e6629aa861c3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81709a85-0c03-91ef-6720-e6629aa861c3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{f4e34a11-0569-333d-df05-d21629a047d6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{f4e34a11-0569-333d-df05-d21629a047d6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ed831ac4-945f-ad96-5456-92bde9d8a121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ed831ac4-945f-ad96-5456-92bde9d8a121}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{a7c4bfc9-9807-f7d6-5d3f-d604b045c23a}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{a7c4bfc9-9807-f7d6-5d3f-d604b045c23a}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
