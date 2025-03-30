@@ -9,14 +9,12 @@ public class TPS : MonoBehaviour
       Aim
    }
 
-
    public enum LocomotionState
    {
       Idle,
       Walk,
       Run
    }
-
 
    public enum PlayerPosture
    {
@@ -28,27 +26,37 @@ public class TPS : MonoBehaviour
 
    private static readonly int CACHE_SIZE = 3;
 
+   // 状态枚举
    public PlayerPosture playerPosture = PlayerPosture.Stand;
    public LocomotionState locomotionState = LocomotionState.Idle;
    public ArmState armState = ArmState.Normal;
+
+   // 组件引用
    public CharacterController characterController;
 
-   public float gravity = -9.81f;
+   // 物理参数
+   public float gravity = -9.81f; // 重力加速度
+   public float jumpVelocity = 5f; // 跳跃速度
+   public float fallMultiplier = 1.5f; // 下落速度的乘数
+   public float groundCheckDistance = 0.4f; // 地面检测距离
 
+   // 移动速度参数
+   private readonly float crouchSpeed = 1.5f; // 蹲伏速度
 
-   public float jumpVelocity = 5f;
-
-   private readonly float crouchSpeed = 1.5f;
-
-   private readonly float crouchThreshold = 0f;
-   private readonly float inAirThreshold = 2.1f;
-   private readonly float runSpeed = 5.5f;
-   private readonly float standThreshold = 1f;
-   private readonly Vector3[] velCache = new Vector3[CACHE_SIZE];
-   private readonly float walkSpeed = 2.5f;
+   // 状态阈值
+   private readonly float crouchThreshold = 0f; // 蹲伏阈值
+   private readonly float inAirThreshold = 2.1f; // 空中阈值
+   private readonly float runSpeed = 5.5f; // 奔跑速度
+   private readonly float standThreshold = 1f; // 站立阈值
+   private readonly Vector3[] velCache = new Vector3[CACHE_SIZE]; // 速度缓存
+   private readonly float walkSpeed = 2.5f; // 行走速度
    private Animator animator;
+
+   // 移动相关
    private Vector3 averageVel = Vector3.zero;
    private Transform cameraTransform;
+
+   // 状态标志
    private bool isAiming;
    private bool isCrouching;
    private bool isGrounded;
@@ -58,21 +66,20 @@ public class TPS : MonoBehaviour
    private bool isWalking;
 
    private Vector3 lastVelocity;
-
    private Vector2 moveInput;
    private int moveSpeedHash;
-
    private PlayerInput playerinput;
-
    private Vector3 playerMovement = Vector3.zero;
    private Transform playerTransform;
 
+   // 动画参数哈希
    private int postureHash;
    private int turnSpeedHash;
-   private int velCacheIndex;
-   private float VerticalVelocity;
-   private int verticalVelocityHash;
 
+   // 缓存索引
+   private int velCacheIndex;
+   private float VerticalVelocity; // 当前垂直速度
+   private int verticalVelocityHash;
 
    private void Start()
    {
@@ -89,16 +96,15 @@ public class TPS : MonoBehaviour
       characterController = GetComponent<CharacterController>();
    }
 
-   // Update is called once per frame
    private void Update()
    {
+      CheckGround();
       CalculateGravity();
       Jump();
       CountInputDirection();
       SwitchPlayerStates();
       SetAnimator();
    }
-
 
    private void OnAnimatorMove()
    {
@@ -117,6 +123,14 @@ public class TPS : MonoBehaviour
       }
    }
 
+   private void CheckGround()
+   {
+      if (Physics.SphereCast(playerTransform.position + Vector3.up * groundCheckDistance, characterController.radius, Vector3.down,
+             out var hit, groundCheckDistance - characterController.radius + 2 * characterController.skinWidth))
+         isGrounded = true;
+      else
+         isGrounded = false;
+   }
 
    private Vector3 AverageVel(Vector3 newVel)
    {
@@ -129,11 +143,10 @@ public class TPS : MonoBehaviour
       return average / CACHE_SIZE;
    }
 
-
    public void SwitchPlayerStates()
    {
       // 修改姿势状态判断
-      if (!characterController.isGrounded)
+      if (!isGrounded)
          playerPosture = PlayerPosture.InAir;
       else if (isCrouching)
          playerPosture = PlayerPosture.Crouch;
@@ -155,19 +168,22 @@ public class TPS : MonoBehaviour
 
    private void Jump()
    {
-      if (characterController.isGrounded && isJumping)
+      if (isGrounded && isJumping)
          VerticalVelocity = jumpVelocity;
    }
 
-
    private void CalculateGravity()
    {
-      if (characterController.isGrounded)
+      if (isGrounded)
          VerticalVelocity = gravity * Time.deltaTime;
       else
-         VerticalVelocity += gravity * Time.deltaTime;
+      {
+         if (VerticalVelocity <= 0)
+            VerticalVelocity += gravity * fallMultiplier * Time.deltaTime;
+         else
+            VerticalVelocity += gravity * Time.deltaTime;
+      }
    }
-
 
    public void CountInputDirection()
    {
@@ -209,8 +225,8 @@ public class TPS : MonoBehaviour
       }
       else if (playerPosture == PlayerPosture.InAir)
       {
-         animator.SetFloat(postureHash, inAirThreshold, 0.1f, Time.deltaTime);
-         animator.SetFloat(verticalVelocityHash, VerticalVelocity, 0.1f, Time.deltaTime);
+         animator.SetFloat(postureHash, inAirThreshold);
+         animator.SetFloat(verticalVelocityHash, VerticalVelocity);
       }
 
 
