@@ -2,7 +2,7 @@ using HSR.NPRShader;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TPS : MonoBehaviour
+public class Tps : MonoBehaviour
 {
    public enum ArmState
    {
@@ -25,7 +25,7 @@ public class TPS : MonoBehaviour
       Idle
    }
 
-   private static readonly int CACHE_SIZE = 3;
+   private static readonly int CacheSize = 3;
    private static readonly int 攻击状态 = Animator.StringToHash("攻击状态");
 
 
@@ -41,70 +41,70 @@ public class TPS : MonoBehaviour
    public Vector3 ditherAlphaPoint = Vector3.zero;
 
    // 移动速度参数
-   private readonly float crouchSpeed = 1.5f; // 蹲伏速度
+   private readonly float _crouchSpeed = 1.5f; // 蹲伏速度
 
 
    // 状态阈值
-   private readonly float crouchThreshold = 0f; // 蹲伏阈值
-   private readonly float inAirThreshold = 2.1f; // 空中阈值
-   private readonly float runSpeed = 5.5f; // 奔跑速度
-   private readonly float standThreshold = 1f; // 站立阈值
-   private readonly Vector3[] velCache = new Vector3[CACHE_SIZE]; // 速度缓存
-   private readonly float walkSpeed = 2.5f; // 行走速度
-   private Animator animator;
-   private ArmState armState = ArmState.Normal;
+   private readonly float _crouchThreshold = 0f; // 蹲伏阈值
+   private readonly float _inAirThreshold = 2.1f; // 空中阈值
+   private readonly float _runSpeed = 5.5f; // 奔跑速度
+   private readonly float _standThreshold = 1f; // 站立阈值
+   private readonly Vector3[] _velCache = new Vector3[CacheSize]; // 速度缓存
+   private readonly float _walkSpeed = 2.5f; // 行走速度
+   private Animator _animator;
+   private ArmState _armState = ArmState.Normal;
 
 
    // 移动相关
-   private Vector3 averageVel = Vector3.zero;
-   private Transform cameraTransform;
+   private Vector3 _averageVel = Vector3.zero;
+   private Transform _cameraTransform;
 
    // 组件引用
-   private CharacterController characterController;
+   private CharacterController _characterController;
 
 
    // 状态标志
-   private bool isAiming;
-   private bool isAttacking;
-   private bool isCrouching;
-   private bool isGrounded;
-   private bool isJumping;
-   private bool isRunning;
-   private bool isStanding;
-   private bool isWalking;
+   private bool _isAiming;
+   private bool _isAttacking;
+   private bool _isCrouching;
+   private bool _isGrounded;
+   private bool _isJumping;
+   private bool _isRunning;
+   private bool _isStanding;
+   private bool _isWalking;
 
 
-   private Vector3 lastVelocity;
-   private LocomotionState locomotionState = LocomotionState.Idle;
-   private Vector2 moveInput;
-   private int moveSpeedHash;
-   private PlayerInput playerinput;
-   private Vector3 playerMovement = Vector3.zero;
+   private Vector3 _lastVelocity;
+   private LocomotionState _locomotionState = LocomotionState.Idle;
+   private Vector2 _moveInput;
+   private int _moveSpeedHash;
+   private PlayerInput _playerinput;
+   private Vector3 _playerMovement = Vector3.zero;
 
    // 状态枚举
-   private PlayerPosture playerPosture = PlayerPosture.Stand;
-   private Transform playerTransform;
+   private PlayerPosture _playerPosture = PlayerPosture.Stand;
+   private Transform _playerTransform;
 
    // 动画参数哈希
-   private int postureHash;
-   private int turnSpeedHash;
+   private int _postureHash;
+   private int _turnSpeedHash;
 
    // 缓存索引
-   private int velCacheIndex;
-   private float VerticalVelocity; // 当前垂直速度
-   private int verticalVelocityHash;
+   private int _velCacheIndex;
+   private float _verticalVelocity; // 当前垂直速度
+   private int _verticalVelocityHash;
 
 
    private void Start()
    {
-      playerTransform = transform;
-      animator = GetComponent<Animator>();
+      _playerTransform = transform;
+      _animator = GetComponent<Animator>();
 
-      postureHash = Animator.StringToHash("玩家姿态");
-      moveSpeedHash = Animator.StringToHash("移动速度");
-      turnSpeedHash = Animator.StringToHash("旋转速度");
-      verticalVelocityHash = Animator.StringToHash("垂直速度");
-      if (Camera.main != null) cameraTransform = Camera.main.transform;
+      _postureHash = Animator.StringToHash("玩家姿态");
+      _moveSpeedHash = Animator.StringToHash("移动速度");
+      _turnSpeedHash = Animator.StringToHash("旋转速度");
+      _verticalVelocityHash = Animator.StringToHash("垂直速度");
+      if (Camera.main != null) _cameraTransform = Camera.main.transform;
 
       //renderingController = GetComponent<StarRailCharacterRenderingController>();  // 获取组件
       //if (renderingController == null)
@@ -112,8 +112,8 @@ public class TPS : MonoBehaviour
          //Debug.LogError("组件获取失败");
       }
 
-      playerinput = GetComponent<PlayerInput>();
-      characterController = GetComponent<CharacterController>();
+      _playerinput = GetComponent<PlayerInput>();
+      _characterController = GetComponent<CharacterController>();
    }
 
    private void Update()
@@ -134,141 +134,141 @@ public class TPS : MonoBehaviour
 
    private void OnAnimatorMove()
    {
-      if (playerPosture != PlayerPosture.InAir)
+      if (_playerPosture != PlayerPosture.InAir)
       {
-         var playerDeltaMovement = animator.deltaPosition;
-         playerDeltaMovement.y = VerticalVelocity * Time.deltaTime;
-         characterController.Move(playerDeltaMovement);
-         averageVel = AverageVel(animator.velocity);
+         var playerDeltaMovement = _animator.deltaPosition;
+         playerDeltaMovement.y = _verticalVelocity * Time.deltaTime;
+         _characterController.Move(playerDeltaMovement);
+         _averageVel = AverageVel(_animator.velocity);
       }
       else
       {
-         var playerDeltaMovement = averageVel * Time.deltaTime;
-         playerDeltaMovement.y = VerticalVelocity * Time.deltaTime;
-         characterController.Move(playerDeltaMovement);
+         var playerDeltaMovement = _averageVel * Time.deltaTime;
+         playerDeltaMovement.y = _verticalVelocity * Time.deltaTime;
+         _characterController.Move(playerDeltaMovement);
       }
    }
 
    private void CheckGround()
    {
-      if (Physics.SphereCast(playerTransform.position + Vector3.up * groundCheckDistance, characterController.radius, Vector3.down,
-             out var hit, groundCheckDistance - characterController.radius + 2 * characterController.skinWidth))
-         isGrounded = true;
+      if (Physics.SphereCast(_playerTransform.position + Vector3.up * groundCheckDistance, _characterController.radius, Vector3.down,
+             out var hit, groundCheckDistance - _characterController.radius + 2 * _characterController.skinWidth))
+         _isGrounded = true;
       else
-         isGrounded = false;
+         _isGrounded = false;
    }
 
    private Vector3 AverageVel(Vector3 newVel)
    {
-      velCache[velCacheIndex] = newVel;
-      velCacheIndex++;
-      velCacheIndex %= CACHE_SIZE;
+      _velCache[_velCacheIndex] = newVel;
+      _velCacheIndex++;
+      _velCacheIndex %= CacheSize;
       var average = Vector3.zero;
-      foreach (var vel in velCache) average += vel;
+      foreach (var vel in _velCache) average += vel;
 
-      return average / CACHE_SIZE;
+      return average / CacheSize;
    }
 
    private void SwitchPlayerStates()
    {
       // 修改姿势状态判断
-      if (!isGrounded)
-         playerPosture = PlayerPosture.InAir;
-      else if (isCrouching)
-         playerPosture = PlayerPosture.Crouch;
+      if (!_isGrounded)
+         _playerPosture = PlayerPosture.InAir;
+      else if (_isCrouching)
+         _playerPosture = PlayerPosture.Crouch;
       else
-         playerPosture = PlayerPosture.Stand;
+         _playerPosture = PlayerPosture.Stand;
 
-      if (moveInput.sqrMagnitude == 0)
-         locomotionState = LocomotionState.Idle;
-      else if (!isRunning)
-         locomotionState = LocomotionState.Walk;
+      if (_moveInput.sqrMagnitude == 0)
+         _locomotionState = LocomotionState.Idle;
+      else if (!_isRunning)
+         _locomotionState = LocomotionState.Walk;
       else
-         locomotionState = LocomotionState.Run;
+         _locomotionState = LocomotionState.Run;
 
-      if (isAiming)
-         armState = ArmState.Aim;
+      if (_isAiming)
+         _armState = ArmState.Aim;
       else
-         armState = ArmState.Normal;
+         _armState = ArmState.Normal;
    }
 
    private void Jump()
    {
-      if (isGrounded && isJumping)
-         VerticalVelocity = Mathf.Sqrt(-2 * maxHeight * gravity);
+      if (_isGrounded && _isJumping)
+         _verticalVelocity = Mathf.Sqrt(-2 * maxHeight * gravity);
    }
 
    private void CalculateGravity()
    {
-      if (isGrounded)
-         VerticalVelocity = gravity * Time.deltaTime;
+      if (_isGrounded)
+         _verticalVelocity = gravity * Time.deltaTime;
       else
       {
-         if (VerticalVelocity <= 0)
-            VerticalVelocity += gravity * fallMultiplier * Time.deltaTime;
+         if (_verticalVelocity <= 0)
+            _verticalVelocity += gravity * fallMultiplier * Time.deltaTime;
          else
-            VerticalVelocity += gravity * Time.deltaTime;
+            _verticalVelocity += gravity * Time.deltaTime;
       }
    }
 
    private void CountInputDirection()
    {
-      var cameraForwardPj = new Vector3(cameraTransform.forward.x, 0, cameraTransform.forward.z).normalized;
-      playerMovement = cameraForwardPj * moveInput.y + cameraTransform.right * moveInput.x;
-      playerMovement = playerTransform.InverseTransformDirection(playerMovement);
+      var cameraForwardPj = new Vector3(_cameraTransform.forward.x, 0, _cameraTransform.forward.z).normalized;
+      _playerMovement = cameraForwardPj * _moveInput.y + _cameraTransform.right * _moveInput.x;
+      _playerMovement = _playerTransform.InverseTransformDirection(_playerMovement);
    }
 
    private void SetAnimator()
    {
-      if (playerPosture == PlayerPosture.Stand)
+      if (_playerPosture == PlayerPosture.Stand)
       {
-         animator.SetFloat(postureHash, standThreshold, 0.1f, Time.deltaTime);
-         switch (locomotionState)
+         _animator.SetFloat(_postureHash, _standThreshold, 0.1f, Time.deltaTime);
+         switch (_locomotionState)
          {
             case LocomotionState.Idle:
-               animator.SetFloat(moveSpeedHash, 0, 0.1f, Time.deltaTime);
+               _animator.SetFloat(_moveSpeedHash, 0, 0.1f, Time.deltaTime);
                break;
             case LocomotionState.Walk:
-               animator.SetFloat(moveSpeedHash, playerMovement.magnitude * walkSpeed, 0.1f, Time.deltaTime);
+               _animator.SetFloat(_moveSpeedHash, _playerMovement.magnitude * _walkSpeed, 0.1f, Time.deltaTime);
                break;
             case LocomotionState.Run:
-               animator.SetFloat(moveSpeedHash, playerMovement.magnitude * runSpeed, 0.1f, Time.deltaTime);
+               _animator.SetFloat(_moveSpeedHash, _playerMovement.magnitude * _runSpeed, 0.1f, Time.deltaTime);
                break;
          }
       }
-      else if (playerPosture == PlayerPosture.Crouch)
+      else if (_playerPosture == PlayerPosture.Crouch)
       {
-         animator.SetFloat(postureHash, crouchThreshold, 0.1f, Time.deltaTime);
-         switch (locomotionState)
+         _animator.SetFloat(_postureHash, _crouchThreshold, 0.1f, Time.deltaTime);
+         switch (_locomotionState)
          {
             case LocomotionState.Idle:
-               animator.SetFloat(moveSpeedHash, 0, 0.1f, Time.deltaTime);
+               _animator.SetFloat(_moveSpeedHash, 0, 0.1f, Time.deltaTime);
                break;
             default:
-               animator.SetFloat(moveSpeedHash, playerMovement.magnitude * crouchSpeed, 0.1f, Time.deltaTime);
+               _animator.SetFloat(_moveSpeedHash, _playerMovement.magnitude * _crouchSpeed, 0.1f, Time.deltaTime);
                break;
          }
       }
-      else if (playerPosture == PlayerPosture.InAir)
+      else if (_playerPosture == PlayerPosture.InAir)
       {
-         animator.SetFloat(postureHash, inAirThreshold);
-         animator.SetFloat(verticalVelocityHash, VerticalVelocity);
+         _animator.SetFloat(_postureHash, _inAirThreshold);
+         _animator.SetFloat(_verticalVelocityHash, _verticalVelocity);
       }
 
 
-      if (armState == ArmState.Normal)
+      if (_armState == ArmState.Normal)
       {
-         float rad = Mathf.Atan2(playerMovement.x, playerMovement.z);
-         animator.SetFloat(turnSpeedHash, rad, 0.1f, Time.deltaTime);
-         playerTransform.Rotate(0, rad * 200 * Time.deltaTime, 0f);
+         var rad = Mathf.Atan2(_playerMovement.x, _playerMovement.z);
+         _animator.SetFloat(_turnSpeedHash, rad, 0.1f, Time.deltaTime);
+         _playerTransform.Rotate(0, rad * 200 * Time.deltaTime, 0f);
          //Debug.Log(rad);
       }
    }
 
    private float GetCameraDistance()
    {
-      var checkPoint = new Vector3(playerTransform.position.x, playerTransform.position.y + 1f, playerTransform.position.z);
-      var cameraDistance = Vector3.Distance(checkPoint, cameraTransform.position);
+      var checkPoint = new Vector3(_playerTransform.position.x, _playerTransform.position.y + 1f, _playerTransform.position.z);
+      var cameraDistance = Vector3.Distance(checkPoint, _cameraTransform.position);
       return cameraDistance;
    }
 
@@ -285,40 +285,40 @@ public class TPS : MonoBehaviour
 
    private void SetAttack()
    {
-      if (isAttacking)
-         animator.SetTrigger(攻击状态);
+      if (_isAttacking)
+         _animator.SetTrigger(攻击状态);
    }
 
    #region 输入
 
    public void GetMoveInput(InputAction.CallbackContext ctx)
    {
-      moveInput = ctx.ReadValue<Vector2>();
+      _moveInput = ctx.ReadValue<Vector2>();
    }
 
    public void GetJumpInput(InputAction.CallbackContext ctx)
    {
-      isJumping = ctx.ReadValueAsButton();
+      _isJumping = ctx.ReadValueAsButton();
    }
 
    public void GetCrouchInput(InputAction.CallbackContext ctx)
    {
-      isCrouching = ctx.ReadValueAsButton();
+      _isCrouching = ctx.ReadValueAsButton();
    }
 
    public void GetRunInput(InputAction.CallbackContext ctx)
    {
-      isRunning = ctx.ReadValueAsButton();
+      _isRunning = ctx.ReadValueAsButton();
    }
 
    public void GetAimInput(InputAction.CallbackContext ctx)
    {
-      isAiming = ctx.ReadValueAsButton();
+      _isAiming = ctx.ReadValueAsButton();
    }
 
    public void GeiAttackInput(InputAction.CallbackContext ctx)
    {
-      isAttacking = ctx.ReadValueAsButton();
+      _isAttacking = ctx.ReadValueAsButton();
    }
 
    #endregion
