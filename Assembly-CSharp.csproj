@@ -192,6 +192,7 @@
       <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc"/>
       <None Include="Assets\Third Parts\Vefects\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Slash_URP.shader"/>
       <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader"/>
+      <None Include="Assets\MC2_Preset_(name).json"/>
       <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader"/>
       <None Include="Assets\Third Parts\Vefects\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_DissolveTex_URP.shader"/>
       <None Include="Assets\Third Parts\VFX_Klaus\Shaders\Fx_Hit&amp;Slash_add.shader"/>

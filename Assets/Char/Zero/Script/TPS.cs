@@ -26,7 +26,6 @@ public class Tps : MonoBehaviour
    }
 
    private static readonly int CacheSize = 3;
-   private static readonly int 攻击状态 = Animator.StringToHash("攻击状态");
 
 
    public StarRailCharacterRenderingController renderingController;
@@ -65,11 +64,12 @@ public class Tps : MonoBehaviour
 
    // 状态标志
    private bool _isAiming;
-   private bool _isAttacking;
    private bool _isCrouching;
    private bool _isGrounded;
    private bool _isJumping;
+   private int _isOnAttack;
    private bool _isRunning;
+   private bool _isSlide;
    private bool _isStanding;
    private bool _isWalking;
 
@@ -104,6 +104,9 @@ public class Tps : MonoBehaviour
       _moveSpeedHash = Animator.StringToHash("移动速度");
       _turnSpeedHash = Animator.StringToHash("旋转速度");
       _verticalVelocityHash = Animator.StringToHash("垂直速度");
+      _isOnAttack = Animator.StringToHash("攻击状态");
+
+
       if (Camera.main != null) _cameraTransform = Camera.main.transform;
 
       //renderingController = GetComponent<StarRailCharacterRenderingController>();  // 获取组件
@@ -130,6 +133,7 @@ public class Tps : MonoBehaviour
       //Debug.Log(GetCameraDistance());
       SetDitherAlpha(GetCameraDistance());
       //OnDrawGizous();
+      bool isAttacking = _animator.GetBool("攻击状态");
    }
 
    private void OnAnimatorMove()
@@ -151,11 +155,9 @@ public class Tps : MonoBehaviour
 
    private void CheckGround()
    {
-      if (Physics.SphereCast(_playerTransform.position + Vector3.up * groundCheckDistance, _characterController.radius, Vector3.down,
-             out var hit, groundCheckDistance - _characterController.radius + 2 * _characterController.skinWidth))
-         _isGrounded = true;
-      else
-         _isGrounded = false;
+      _isGrounded = Physics.SphereCast(_playerTransform.position + Vector3.up * groundCheckDistance, _characterController.radius,
+         Vector3.down,
+         out var hit, groundCheckDistance - _characterController.radius + 2 * _characterController.skinWidth);
    }
 
    private Vector3 AverageVel(Vector3 newVel)
@@ -285,9 +287,13 @@ public class Tps : MonoBehaviour
 
    private void SetAttack()
    {
-      if (_isAttacking)
-         _animator.SetTrigger(攻击状态);
+      Debug.Log(_isOnAttack);
+      if (_isOnAttack == 1)
+      {
+         _animator.SetTrigger("攻击状态");
+      }
    }
+
 
    #region 输入
 
@@ -316,9 +322,12 @@ public class Tps : MonoBehaviour
       _isAiming = ctx.ReadValueAsButton();
    }
 
-   public void GeiAttackInput(InputAction.CallbackContext ctx)
+   public void GetAttackInput(InputAction.CallbackContext ctx)
    {
-      _isAttacking = ctx.ReadValueAsButton();
+      if (_isOnAttack == 0)
+      {
+         _isOnAttack = 1;
+      }
    }
 
    #endregion
