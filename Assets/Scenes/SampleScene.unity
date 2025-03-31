@@ -406,7 +406,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147484879}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38051423, y: 0, z: 0, w: 0.92477506}
+  m_LocalRotation: {x: -0.38051423, y: 0, z: 0, w: 0.9247751}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -731,11 +731,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
-  far clip plane: 1000
+  near clip plane: 0.1
+  far clip plane: 5000
   field of view: 40
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -759,8 +759,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.08578815, y: 0.27416503, z: 0.024563221, w: 0.9575336}
-  m_LocalPosition: {x: 0.7484224, y: 0.27862364, z: -1.7752845}
+  m_LocalRotation: {x: -0.38051426, y: -0.000000027560448, z: -0.00000001134021, w: 0.92477506}
+  m_LocalPosition: {x: 15.03, y: 0.18478292, z: -1.5280604}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3836,7 +3836,19 @@ MonoBehaviour:
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 689460335}
+        m_TargetAssemblyTypeName: Tps, Assembly-CSharp
+        m_MethodName: GetSlideInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ce27cbc1-c420-40da-987d-618b1f869dd9
     m_ActionName: Player/Slide[/Keyboard/e,/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
@@ -4285,7 +4297,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 735422206}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.37842008, y: 0, z: 0, w: 0.92563397}
+  m_LocalRotation: {x: -0.3784201, y: -9.681586e-15, z: -3.905759e-15, w: 0.925634}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4565,7 +4577,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816037915}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.35683802, y: 0, z: 0, w: 0.9341663}
+  m_LocalRotation: {x: -0.35689238, y: 0.00000002783971, z: 0.000000010636223, w: 0.9341455}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

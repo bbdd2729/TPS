@@ -65,6 +65,9 @@ public class Tps : MonoBehaviour
 
    // 组件引用
    private CharacterController _characterController;
+   private int _deltaXHash;
+   private int _deltaYHash;
+   private int _deltaZHash;
 
 
    // 状态标志
@@ -72,7 +75,6 @@ public class Tps : MonoBehaviour
    private bool _isCrouching;
    private bool _isGrounded;
    private bool _isJumping;
-   private bool _isOnAttack;
    private bool _isRunning;
    private bool _isSlide;
    private bool _isStanding;
@@ -92,11 +94,14 @@ public class Tps : MonoBehaviour
 
    // 动画参数哈希
    private int _postureHash;
+   private int _slideHash;
+   private int _slideTriggerHash;
+
    private int _turnSpeedHash;
 
 
    // 缓存索引
-   private int _velCacheIndex;
+   private int _velCacheIndex; // 速度缓存索引
    private float _verticalVelocity; // 当前垂直速度
    private int _verticalVelocityHash;
 
@@ -112,6 +117,11 @@ public class Tps : MonoBehaviour
       _verticalVelocityHash = Animator.StringToHash("垂直速度");
       _attackHash = Animator.StringToHash("攻击状态");
       _AttackTriggerHash = Animator.StringToHash("攻击触发");
+      _slideHash = Animator.StringToHash("闪避状态");
+      _slideTriggerHash = Animator.StringToHash("闪避触发");
+      _deltaXHash = Animator.StringToHash("dx");
+      _deltaYHash = Animator.StringToHash("dy");
+      _deltaZHash = Animator.StringToHash("dz");
 
 
       if (Camera.main != null) _cameraTransform = Camera.main.transform;
@@ -224,6 +234,9 @@ public class Tps : MonoBehaviour
       var cameraForwardPj = new Vector3(_cameraTransform.forward.x, 0, _cameraTransform.forward.z).normalized;
       _playerMovement = cameraForwardPj * _moveInput.y + _cameraTransform.right * _moveInput.x;
       _playerMovement = _playerTransform.InverseTransformDirection(_playerMovement);
+      _animator.SetFloat(_deltaXHash, _playerMovement.x);
+      //_animator.SetFloat(_deltaYHash, _playerMovement.y);
+      _animator.SetFloat(_deltaZHash, _playerMovement.z);
    }
 
    private void SetAnimator()
@@ -268,15 +281,9 @@ public class Tps : MonoBehaviour
       {
          var rad = Mathf.Atan2(_playerMovement.x, _playerMovement.z);
          _animator.SetFloat(_turnSpeedHash, rad, 0.1f, Time.deltaTime);
-         _playerTransform.Rotate(0, rad * 200 * Time.deltaTime, 0f);
+         _playerTransform.Rotate(0f, rad * 200 * Time.deltaTime, 0f);
          //Debug.Log(rad);
       }
-
-      //if (_isOnAttack == true)
-      {
-         // _animator.SetBool(IsAttack, true);
-      }
-      // SetAttack();
    }
 
    private float GetCameraDistance()
@@ -296,18 +303,6 @@ public class Tps : MonoBehaviour
       Gizmos.color = Color.red;
       Gizmos.DrawSphere(ditherAlphaPoint, 0.1f);
    }
-
-   private void SetAttack()
-   {
-      Debug.Log(_isOnAttack);
-      if (_isOnAttack)
-      {
-         _animator.SetTrigger(AttackTrigger);
-         _animator.SetBool(IsAttack, true);
-         _isOnAttack = false;
-      }
-   }
-
 
    #region 输入
 
@@ -340,12 +335,22 @@ public class Tps : MonoBehaviour
    {
       if (ctx.performed)
       {
-         _isOnAttack = true;
          _animator.SetBool(_attackHash, true);
          _animator.SetTrigger(_AttackTriggerHash);
       }
       else if (ctx.canceled)
          _animator.SetBool(_attackHash, false);
+   }
+
+   public void GetSlideInput(InputAction.CallbackContext ctx)
+   {
+      if (ctx.performed)
+      {
+         _animator.SetBool(_slideHash, true);
+         _animator.SetTrigger(_slideTriggerHash);
+      }
+      else if (ctx.canceled)
+         _animator.SetBool(_slideHash, false);
    }
 
    #endregion
