@@ -26,7 +26,8 @@ public class Tps : MonoBehaviour
    }
 
    private static readonly int CacheSize = 3;
-
+   private static readonly int IsAttack = Animator.StringToHash("攻击状态");
+   private static readonly int AttackTrigger = Animator.StringToHash("攻击触发");
 
    public StarRailCharacterRenderingController renderingController;
 
@@ -53,6 +54,10 @@ public class Tps : MonoBehaviour
    private Animator _animator;
    private ArmState _armState = ArmState.Normal;
 
+   private bool _attack;
+   private int _attackHash;
+   private int _AttackTriggerHash;
+
 
    // 移动相关
    private Vector3 _averageVel = Vector3.zero;
@@ -67,7 +72,7 @@ public class Tps : MonoBehaviour
    private bool _isCrouching;
    private bool _isGrounded;
    private bool _isJumping;
-   private int _isOnAttack;
+   private bool _isOnAttack;
    private bool _isRunning;
    private bool _isSlide;
    private bool _isStanding;
@@ -89,6 +94,7 @@ public class Tps : MonoBehaviour
    private int _postureHash;
    private int _turnSpeedHash;
 
+
    // 缓存索引
    private int _velCacheIndex;
    private float _verticalVelocity; // 当前垂直速度
@@ -104,7 +110,8 @@ public class Tps : MonoBehaviour
       _moveSpeedHash = Animator.StringToHash("移动速度");
       _turnSpeedHash = Animator.StringToHash("旋转速度");
       _verticalVelocityHash = Animator.StringToHash("垂直速度");
-      _isOnAttack = Animator.StringToHash("攻击状态");
+      _attackHash = Animator.StringToHash("攻击状态");
+      _AttackTriggerHash = Animator.StringToHash("攻击触发");
 
 
       if (Camera.main != null) _cameraTransform = Camera.main.transform;
@@ -124,7 +131,7 @@ public class Tps : MonoBehaviour
       CheckGround();
       CalculateGravity();
       Jump();
-      SetAttack();
+
       CountInputDirection();
       SwitchPlayerStates();
       SetAnimator();
@@ -133,7 +140,6 @@ public class Tps : MonoBehaviour
       //Debug.Log(GetCameraDistance());
       SetDitherAlpha(GetCameraDistance());
       //OnDrawGizous();
-      bool isAttacking = _animator.GetBool("攻击状态");
    }
 
    private void OnAnimatorMove()
@@ -265,6 +271,12 @@ public class Tps : MonoBehaviour
          _playerTransform.Rotate(0, rad * 200 * Time.deltaTime, 0f);
          //Debug.Log(rad);
       }
+
+      //if (_isOnAttack == true)
+      {
+         // _animator.SetBool(IsAttack, true);
+      }
+      // SetAttack();
    }
 
    private float GetCameraDistance()
@@ -288,9 +300,11 @@ public class Tps : MonoBehaviour
    private void SetAttack()
    {
       Debug.Log(_isOnAttack);
-      if (_isOnAttack == 1)
+      if (_isOnAttack)
       {
-         _animator.SetTrigger("攻击状态");
+         _animator.SetTrigger(AttackTrigger);
+         _animator.SetBool(IsAttack, true);
+         _isOnAttack = false;
       }
    }
 
@@ -324,10 +338,14 @@ public class Tps : MonoBehaviour
 
    public void GetAttackInput(InputAction.CallbackContext ctx)
    {
-      if (_isOnAttack == 0)
+      if (ctx.performed)
       {
-         _isOnAttack = 1;
+         _isOnAttack = true;
+         _animator.SetBool(_attackHash, true);
+         _animator.SetTrigger(_AttackTriggerHash);
       }
+      else if (ctx.canceled)
+         _animator.SetBool(_attackHash, false);
    }
 
    #endregion
