@@ -114,7 +114,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaTest: 0
-    - _AlphaTestThreshold: 0.5
+    - _AlphaTestThreshold: 0.813
     - _AlphaToMask: 0
     - _BackFaceUV2: 0
     - _Blend: 0
@@ -211,9 +211,9 @@ Material:
     - _SingleMaterialID: -1
     - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
-    - _SpecularColor: 0
+    - _SpecularColor: 1
     - _SpecularHighlights: 1
-    - _SpecularIntensity: 0
+    - _SpecularIntensity: 1
     - _SpecularIntensity0: 1
     - _SpecularIntensity1: 1
     - _SpecularIntensity2: 1
@@ -222,7 +222,7 @@ Material:
     - _SpecularIntensity5: 1
     - _SpecularIntensity6: 1
     - _SpecularIntensity7: 1
-    - _SpecularRoughness: 0
+    - _SpecularRoughness: 1
     - _SpecularRoughness0: 0.02
     - _SpecularRoughness1: 0.02
     - _SpecularRoughness2: 0.02
@@ -231,7 +231,7 @@ Material:
     - _SpecularRoughness5: 0.02
     - _SpecularRoughness6: 0.02
     - _SpecularRoughness7: 0.02
-    - _SpecularShininess: 0
+    - _SpecularShininess: 1
     - _SpecularShininess0: 10
     - _SpecularShininess1: 10
     - _SpecularShininess2: 10
