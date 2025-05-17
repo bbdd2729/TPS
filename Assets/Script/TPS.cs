@@ -219,7 +219,9 @@ public class Tps : MonoBehaviour
    private void CalculateGravity()
    {
       if (_isGrounded)
+      {
          _verticalVelocity = gravity * Time.deltaTime;
+      }
       else
       {
          if (_verticalVelocity <= 0)
@@ -339,7 +341,9 @@ public class Tps : MonoBehaviour
          _animator.SetTrigger(_AttackTriggerHash);
       }
       else if (ctx.canceled)
+      {
          _animator.SetBool(_attackHash, false);
+      }
    }
 
    public void GetSlideInput(InputAction.CallbackContext ctx)
@@ -350,7 +354,9 @@ public class Tps : MonoBehaviour
          _animator.SetTrigger(_slideTriggerHash);
       }
       else if (ctx.canceled)
+      {
          _animator.SetBool(_slideHash, false);
+      }
    }
 
    #endregion

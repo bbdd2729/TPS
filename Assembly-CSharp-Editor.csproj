@@ -908,6 +908,14 @@
       <Project>{3878016c-17c1-60b2-2942-32f1cff482b8}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="MagicaClothV2.csproj">
+      <Project>{b354b11a-dcb0-e079-01aa-ce867d3bd558}</Project>
+      <Name>MagicaClothV2</Name>
+    </ProjectReference>
+    <ProjectReference Include="MagicaClothV2.Editor.csproj">
+      <Project>{2f4646a8-7089-c776-cdcc-f8fd5a0e0871}</Project>
+      <Name>MagicaClothV2.Editor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

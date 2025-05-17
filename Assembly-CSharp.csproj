@@ -46,12 +46,14 @@
     <Analyzer Include="D:\Unity Hub\Editor\2022.3.55f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\Character\BaseCharacter.cs"/>
     <Compile Include="Assets\Shader\二次元\UnityGenshinToonShader-main\Scripts\MaterialUpdater.cs" />
-    <Compile Include="Assets\Char\Zero\Script\TPS.cs" />
-    <Compile Include="Assets\Char\Zero\Script\InputSystem_Actions.cs" />
+    <Compile Include="Assets\Script\InputSystem_Actions.cs"/>
+    <Compile Include="Assets\Script\TPS.cs"/>
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Char\Zero.cs" />
-    <Compile Include="Assets\Char\Zero\Script\Slide.cs"/>
+    <Compile Include="Assets\Script\Slide.cs"/>
+    <Compile Include="Assets\Script\Character\CharacterManager.cs"/>
     <Compile Include="Assets\Char\Animation\copyObj.cs"/>
     <Compile Include="Assets\Char\Animation\Anamation.cs" />
     <None Include="Assets\MC2_Preset_(name).json" />
@@ -867,6 +869,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="MagicaClothV2.csproj">
+      <Project>{b354b11a-dcb0-e079-01aa-ce867d3bd558}</Project>
+      <Name>MagicaClothV2</Name>
+    </ProjectReference>
+    <ProjectReference Include="MagicaClothV2.Editor.csproj">
+      <Project>{2f4646a8-7089-c776-cdcc-f8fd5a0e0871}</Project>
+      <Name>MagicaClothV2.Editor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

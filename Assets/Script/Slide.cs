@@ -9,13 +9,13 @@ public class AdvancedAfterimageEffect : MonoBehaviour
    [Header("渲染器设置")] public Renderer[] targetRenderers;
 
    [Header("残影设置")] public AfterimageSettings settings = new();
+   private readonly List<Queue<GameObject>> _afterimagePools = new();
+   private readonly List<Material[]> _originalMaterials = new();
 
    private Transform _afterimageContainer;
-   private readonly List<Queue<GameObject>> _afterimagePools = new();
 
    private Animator _animator;
    private bool _isGenerating;
-   private readonly List<Material[]> _originalMaterials = new();
 
    private void Awake()
    {
@@ -56,10 +56,7 @@ public class AdvancedAfterimageEffect : MonoBehaviour
       for (var i = 0; i < targetRenderers.Length; i++)
       {
          var pool = new Queue<GameObject>();
-         for (var j = 0; j < settings.poolSize; j++)
-         {
-            pool.Enqueue(CreateAfterimageObject(i));
-         }
+         for (var j = 0; j < settings.poolSize; j++) pool.Enqueue(CreateAfterimageObject(i));
 
          _afterimagePools.Add(pool);
       }
