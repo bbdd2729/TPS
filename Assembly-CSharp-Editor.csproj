@@ -824,6 +824,12 @@
     <Reference Include="Unity.ShaderGraph.Editor">
       <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="UniTask.DOTween">
+      <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\UniTask.DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="UniTask.Addressables">
+      <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\UniTask.Addressables.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>E:\Unity\TPS\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>

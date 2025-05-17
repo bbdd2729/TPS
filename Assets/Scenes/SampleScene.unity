@@ -156,6 +156,12 @@ MonoBehaviour:
   m_MMDHeadBoneForward: 0
   m_MMDHeadBoneUp: 4
   m_MMDHeadBoneRight: 3
+--- !u!137 &27215280 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1630794972795428178, guid: 899338556ade8614e8f7c9549bcee3b4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1826571609}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &40733491 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -132321097208826383, guid: 899338556ade8614e8f7c9549bcee3b4,
@@ -323,8 +329,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147484879}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16878292, y: 0, z: 0, w: 0.9856533}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.38051423, y: 0, z: 0, w: 0.9247751}
+  m_LocalPosition: {x: 0.0000009536743, y: 0, z: -0.00000023841858}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4171,6 +4177,28 @@ MonoBehaviour:
   - {fileID: 1356070068}
   - {fileID: 1786109377}
   - {fileID: 1048974645}
+--- !u!114 &689460340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689460330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d40d5be7877838c478aa8eca23c0d7ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterRenderer: {fileID: 27215280}
+  afterimageSettings:
+    enabled: 1
+    duration: 0.5
+    spawnInterval: 0.05
+    startColor: {r: 1, g: 1, b: 1, a: 0.7}
+    fadeSpeed: 2
+    afterimageMaterial: {fileID: 2100000, guid: ab2ce17d04d468c459f3886b3eeac4d0,
+      type: 2}
+    poolSize: 15
 --- !u!4 &690230039 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2016522440362914001, guid: 899338556ade8614e8f7c9549bcee3b4,
@@ -4302,8 +4330,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 735422206}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17980155, y: 0, z: 0, w: 0.9837029}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.3784201, y: -9.681586e-15, z: -3.905759e-15, w: 0.925634}
+  m_LocalPosition: {x: 0.0000009536743, y: 0, z: -0.00000023841858}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4582,8 +4610,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816037915}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19984314, y: 0, z: 0, w: 0.97982794}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.35689238, y: 0.00000002783971, z: 0.000000010636223, w: 0.9341455}
+  m_LocalPosition: {x: 0.0000009536743, y: 0, z: -0.00000023841858}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6866,9 +6894,7 @@ MonoBehaviour:
     colliderCollisionConstraint:
       mode: 2
       friction: 0.05
-      colliderList:
-      - {fileID: 383406556}
-      - {fileID: 480175277}
+      colliderList: [{fileID: 383406556}, {fileID: 480175277}]
       collisionBones: []
       limitDistance:
         value: 0.05
@@ -9178,6 +9204,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 899338556ade8614e8f7c9549bcee3b4,
         type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 899338556ade8614e8f7c9549bcee3b4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 899338556ade8614e8f7c9549bcee3b4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 899338556ade8614e8f7c9549bcee3b4,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -9416,6 +9457,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 689460339}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 899338556ade8614e8f7c9549bcee3b4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 689460340}
     - targetCorrespondingSourceObject: {fileID: 635547659545568360, guid: 899338556ade8614e8f7c9549bcee3b4,
         type: 3}
       insertIndex: -1
