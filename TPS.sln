@@ -1,55 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicaClothV2", "MagicaClothV2.csproj", "{b354b11a-dcb0-e079-01aa-ce867d3bd558}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boxophobic.Utils.Editor", "Boxophobic.Utils.Editor.csproj", "{19dc4acf-ba0e-570d-ceb3-4fbd1bc7dada}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{3878016c-17c1-60b2-2942-32f1cff482b8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicaClothV2.Editor", "MagicaClothV2.Editor.csproj", "{2f4646a8-7089-c776-cdcc-f8fd5a0e0871}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boxophobic.Utils.Scripts", "Boxophobic.Utils.Scripts.csproj", "{81709a85-0c03-91ef-6720-e6629aa861c3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boxophobic.AtmosphericHeightFog.Runtime", "Boxophobic.AtmosphericHeightFog.Runtime.csproj", "{f4e34a11-0569-333d-df05-d21629a047d6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boxophobic.AtmosphericHeightFog.Editor", "Boxophobic.AtmosphericHeightFog.Editor.csproj", "{ed831ac4-945f-ad96-5456-92bde9d8a121}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{a7c4bfc9-9807-f7d6-5d3f-d604b045c23a}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicaCloth2UPMImporterShaderGraph", "MagicaCloth2UPMImporterShaderGraph.csproj", "{56d38e55-b434-aa5a-4d08-fcc34c4a56b1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicaClothV2UPMImporterCollections", "MagicaClothV2UPMImporterCollections.csproj", "{1deb7067-3a5c-3454-46ff-d7476d67723d}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicaClothV2UPMImporterBurst", "MagicaClothV2UPMImporterBurst.csproj", "{96adcba8-6d93-8453-e7fe-441500bf64f4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{b354b11a-dcb0-e079-01aa-ce867d3bd558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{b354b11a-dcb0-e079-01aa-ce867d3bd558}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19dc4acf-ba0e-570d-ceb3-4fbd1bc7dada}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19dc4acf-ba0e-570d-ceb3-4fbd1bc7dada}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3878016c-17c1-60b2-2942-32f1cff482b8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3878016c-17c1-60b2-2942-32f1cff482b8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2f4646a8-7089-c776-cdcc-f8fd5a0e0871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2f4646a8-7089-c776-cdcc-f8fd5a0e0871}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81709a85-0c03-91ef-6720-e6629aa861c3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81709a85-0c03-91ef-6720-e6629aa861c3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{f4e34a11-0569-333d-df05-d21629a047d6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{f4e34a11-0569-333d-df05-d21629a047d6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ed831ac4-945f-ad96-5456-92bde9d8a121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ed831ac4-945f-ad96-5456-92bde9d8a121}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{a7c4bfc9-9807-f7d6-5d3f-d604b045c23a}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{a7c4bfc9-9807-f7d6-5d3f-d604b045c23a}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56d38e55-b434-aa5a-4d08-fcc34c4a56b1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56d38e55-b434-aa5a-4d08-fcc34c4a56b1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1deb7067-3a5c-3454-46ff-d7476d67723d}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1deb7067-3a5c-3454-46ff-d7476d67723d}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96adcba8-6d93-8453-e7fe-441500bf64f4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96adcba8-6d93-8453-e7fe-441500bf64f4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
