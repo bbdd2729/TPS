@@ -18,6 +18,15 @@ public abstract class BaseCharacter : MonoBehaviour
 
    public abstract void OnCharacterEnabled();
    public abstract void OnCharacterDisabled();
+
+   public object GetAbility(int skillSlot)
+   {
+      throw new NotImplementedException();
+   }
+}
+
+public enum CharacterType
+{
 }
 
 [Serializable]
